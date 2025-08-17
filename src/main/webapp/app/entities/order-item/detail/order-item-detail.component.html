@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (orderItem(); as orderItemRef) {
+      <div>
+        <h2 data-cy="orderItemDetailsHeading"><span jhiTranslate="agriLinkRwandaApp.orderItem.detail.title">Order Item</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ orderItemRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.orderItem.quantity">Quantity</span></dt>
+          <dd>
+            <span>{{ orderItemRef.quantity }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.orderItem.priceAtOrder">Price At Order</span></dt>
+          <dd>
+            <span>{{ orderItemRef.priceAtOrder }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.orderItem.order">Order</span></dt>
+          <dd>
+            @if (orderItem()!.order) {
+              <div>
+                <a [routerLink]="['/purchase-order', orderItem()!.order?.id, 'view']">{{ orderItemRef.order?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.orderItem.farmerProduce">Farmer Produce</span></dt>
+          <dd>
+            @if (orderItem()!.farmerProduce) {
+              <div>
+                <a [routerLink]="['/farmer-produce', orderItem()!.farmerProduce?.id, 'view']">{{ orderItemRef.farmerProduce?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/order-item', orderItemRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

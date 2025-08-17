@@ -1,0 +1,11 @@
+{
+  "agriLinkRwandaApp": {
+    "Unit": {
+      "null": "",
+      "KG": "KG",
+      "GRAM": "GRAM",
+      "LITER": "LITER",
+      "PIECE": "PIECE"
+    }
+  }
+}

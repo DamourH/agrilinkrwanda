@@ -1,0 +1,31 @@
+{
+  "agriLinkRwandaApp": {
+    "farmerProduce": {
+      "home": {
+        "title": "Farmer Produces",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Farmer Produce",
+        "createOrEditLabel": "Create or edit a Farmer Produce",
+        "search": "Search for Farmer Produce",
+        "notFound": "No Farmer Produces found"
+      },
+      "created": "A new Farmer Produce is created with identifier {{ param }}",
+      "updated": "A Farmer Produce is updated with identifier {{ param }}",
+      "deleted": "A Farmer Produce is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Farmer Produce {{ id }}?"
+      },
+      "detail": {
+        "title": "Farmer Produce"
+      },
+      "id": "ID",
+      "quantity": "Quantity",
+      "unit": "Unit",
+      "pricePerUnit": "Price Per Unit",
+      "availableFrom": "Available From",
+      "availableUntil": "Available Until",
+      "grade": "Grade",
+      "farmer": "Farmer"
+    }
+  }
+}

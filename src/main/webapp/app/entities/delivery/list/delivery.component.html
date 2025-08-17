@@ -1,0 +1,162 @@
+<div>
+  <h2 id="page-heading" data-cy="DeliveryHeading">
+    <span jhiTranslate="agriLinkRwandaApp.delivery.home.title">Deliveries</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="agriLinkRwandaApp.delivery.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-delivery"
+        [routerLink]="['/delivery/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down" jhiTranslate="agriLinkRwandaApp.delivery.home.createLabel">Create a new Delivery</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch" jhiTranslate="agriLinkRwandaApp.delivery.home.search">Search for Delivery</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="currentSearch"
+          id="currentSearch"
+          name="currentSearch"
+          placeholder="{{ 'agriLinkRwandaApp.delivery.home.search' | translate }}"
+        />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (deliveries().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="agriLinkRwandaApp.delivery.home.notFound">No Deliveries found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="pickupDate">
+              <div class="d-flex">
+                <span jhiTranslate="agriLinkRwandaApp.delivery.pickupDate">Pickup Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="deliveryDate">
+              <div class="d-flex">
+                <span jhiTranslate="agriLinkRwandaApp.delivery.deliveryDate">Delivery Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="status">
+              <div class="d-flex">
+                <span jhiTranslate="agriLinkRwandaApp.delivery.status">Status</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="driver.login">
+              <div class="d-flex">
+                <span jhiTranslate="agriLinkRwandaApp.delivery.driver">Driver</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="order.id">
+              <div class="d-flex">
+                <span jhiTranslate="agriLinkRwandaApp.delivery.order">Order</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (delivery of deliveries(); track trackId(delivery)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/delivery', delivery.id, 'view']">{{ delivery.id }}</a>
+              </td>
+              <td>{{ delivery.pickupDate | formatMediumDatetime }}</td>
+              <td>{{ delivery.deliveryDate | formatMediumDatetime }}</td>
+              <td [jhiTranslate]="'agriLinkRwandaApp.OrderStatus.' + (delivery.status ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    PENDING: 'PENDING',
+                    CONFIRMED: 'CONFIRMED',
+                    REJECTED: 'REJECTED',
+                    PICKED_UP: 'PICKED_UP',
+                    IN_TRANSIT: 'IN_TRANSIT',
+                    DELIVERED: 'DELIVERED',
+                    CANCELLED: 'CANCELLED',
+                  }[delivery.status ?? 'null']
+                }}
+              </td>
+              <td>
+                {{ delivery.driver?.login }}
+              </td>
+              <td>
+                @if (delivery.order) {
+                  <div>
+                    <a [routerLink]="['/purchase-order', delivery.order.id, 'view']">{{ delivery.order.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/delivery', delivery.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/delivery', delivery.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(delivery)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

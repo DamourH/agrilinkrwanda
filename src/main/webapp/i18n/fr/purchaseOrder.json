@@ -1,0 +1,30 @@
+{
+  "agriLinkRwandaApp": {
+    "purchaseOrder": {
+      "home": {
+        "title": "PurchaseOrders",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Purchase Order",
+        "createOrEditLabel": "Créer ou éditer un Purchase Order",
+        "search": "Recherche pour Purchase Order",
+        "notFound": "Aucun Purchase Order trouvé"
+      },
+      "created": "Un nouveau Purchase Order a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Purchase Order avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Purchase Order avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Purchase Order {{ id }} ?"
+      },
+      "detail": {
+        "title": "Purchase Order"
+      },
+      "id": "ID",
+      "orderDate": "Order Date",
+      "status": "Status",
+      "totalAmount": "Total Amount",
+      "deliveryAddress": "Delivery Address",
+      "notes": "Notes",
+      "buyer": "Buyer"
+    }
+  }
+}

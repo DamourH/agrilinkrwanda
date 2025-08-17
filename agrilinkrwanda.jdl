@@ -1,0 +1,60 @@
+// --- Enums ---
+enum OrderStatus {
+  PENDING, CONFIRMED, REJECTED, PICKED_UP, IN_TRANSIT, DELIVERED, CANCELLED
+}
+enum QualityGrade {
+  A_GRADE, B_GRADE, C_GRADE
+}
+enum Unit {
+  KG, GRAM, LITER, PIECE
+}
+
+// --- Entities ---
+entity ProductCategory {
+  name String required,
+  description String
+}
+entity Produce {
+  name String required,
+  description String
+}
+entity FarmerProduce {
+  quantity Double required,
+  unit Unit required,
+  pricePerUnit BigDecimal required,
+  availableFrom Instant required,
+  availableUntil Instant,
+  grade QualityGrade
+}
+entity PurchaseOrder {
+  orderDate Instant required,
+  status OrderStatus required,
+  totalAmount BigDecimal required,
+  deliveryAddress String required,
+  notes String
+}
+entity OrderItem {
+  quantity Double required,
+  priceAtOrder BigDecimal required
+}
+entity Delivery {
+  pickupDate Instant,
+  deliveryDate Instant,
+  status OrderStatus
+}
+
+// --- Relationships ---
+relationship ManyToOne {
+  FarmerProduce{farmer(login)} to User with builtInEntity,
+  PurchaseOrder{buyer(login)} to User with builtInEntity,
+  Delivery{driver(login)} to User with builtInEntity,
+  Produce{category} to ProductCategory,
+  Delivery{order} to PurchaseOrder,
+  OrderItem{order} to PurchaseOrder,
+  OrderItem{farmerProduce} to FarmerProduce
+}
+
+// --- Options ---
+dto * with mapstruct
+service * with serviceImpl
+paginate FarmerProduce, PurchaseOrder with pagination

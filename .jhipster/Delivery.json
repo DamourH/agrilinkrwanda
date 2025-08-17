@@ -1,0 +1,40 @@
+{
+  "annotations": {
+    "changelogDate": "20250817181211"
+  },
+  "applications": ["*"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "pickupDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "deliveryDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "OrderStatus",
+      "fieldValues": "PENDING,CONFIRMED,REJECTED,PICKED_UP,IN_TRANSIT,DELIVERED,CANCELLED"
+    }
+  ],
+  "name": "Delivery",
+  "relationships": [
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "driver",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityName": "purchaseOrder",
+      "relationshipName": "order",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

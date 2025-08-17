@@ -1,0 +1,110 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-delivery-heading" data-cy="DeliveryCreateUpdateHeading" jhiTranslate="agriLinkRwandaApp.delivery.home.createOrEditLabel">
+        Create or edit a Delivery
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="agriLinkRwandaApp.delivery.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_pickupDate" jhiTranslate="agriLinkRwandaApp.delivery.pickupDate">Pickup Date</label>
+          <div class="d-flex">
+            <input
+              id="field_pickupDate"
+              data-cy="pickupDate"
+              type="datetime-local"
+              class="form-control"
+              name="pickupDate"
+              formControlName="pickupDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_deliveryDate" jhiTranslate="agriLinkRwandaApp.delivery.deliveryDate">Delivery Date</label>
+          <div class="d-flex">
+            <input
+              id="field_deliveryDate"
+              data-cy="deliveryDate"
+              type="datetime-local"
+              class="form-control"
+              name="deliveryDate"
+              formControlName="deliveryDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_status" jhiTranslate="agriLinkRwandaApp.delivery.status">Status</label>
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null">{{ 'agriLinkRwandaApp.OrderStatus.null' | translate }}</option>
+            @for (orderStatus of orderStatusValues; track $index) {
+              <option [value]="orderStatus">{{ 'agriLinkRwandaApp.OrderStatus.' + orderStatus | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_driver" jhiTranslate="agriLinkRwandaApp.delivery.driver">Driver</label>
+          <select
+            class="form-control"
+            id="field_driver"
+            data-cy="driver"
+            name="driver"
+            formControlName="driver"
+            [compareWith]="compareUser"
+          >
+            <option [ngValue]="null"></option>
+            @for (userOption of usersSharedCollection; track $index) {
+              <option [ngValue]="userOption">{{ userOption.login }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_order" jhiTranslate="agriLinkRwandaApp.delivery.order">Order</label>
+          <select
+            class="form-control"
+            id="field_order"
+            data-cy="order"
+            name="order"
+            formControlName="order"
+            [compareWith]="comparePurchaseOrder"
+          >
+            <option [ngValue]="null"></option>
+            @for (purchaseOrderOption of purchaseOrdersSharedCollection; track $index) {
+              <option [ngValue]="purchaseOrderOption">{{ purchaseOrderOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

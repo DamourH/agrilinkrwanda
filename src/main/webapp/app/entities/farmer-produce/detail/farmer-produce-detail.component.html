@@ -1,0 +1,64 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (farmerProduce(); as farmerProduceRef) {
+      <div>
+        <h2 data-cy="farmerProduceDetailsHeading">
+          <span jhiTranslate="agriLinkRwandaApp.farmerProduce.detail.title">Farmer Produce</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ farmerProduceRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.farmerProduce.quantity">Quantity</span></dt>
+          <dd>
+            <span>{{ farmerProduceRef.quantity }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.farmerProduce.unit">Unit</span></dt>
+          <dd>
+            <span [jhiTranslate]="'agriLinkRwandaApp.Unit.' + (farmerProduceRef.unit ?? 'null')">{{
+              { null: '', KG: 'KG', GRAM: 'GRAM', LITER: 'LITER', PIECE: 'PIECE' }[farmerProduceRef.unit ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.farmerProduce.pricePerUnit">Price Per Unit</span></dt>
+          <dd>
+            <span>{{ farmerProduceRef.pricePerUnit }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.farmerProduce.availableFrom">Available From</span></dt>
+          <dd>
+            <span>{{ farmerProduceRef.availableFrom | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.farmerProduce.availableUntil">Available Until</span></dt>
+          <dd>
+            <span>{{ farmerProduceRef.availableUntil | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.farmerProduce.grade">Grade</span></dt>
+          <dd>
+            <span [jhiTranslate]="'agriLinkRwandaApp.QualityGrade.' + (farmerProduceRef.grade ?? 'null')">{{
+              { null: '', A_GRADE: 'A_GRADE', B_GRADE: 'B_GRADE', C_GRADE: 'C_GRADE' }[farmerProduceRef.grade ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.farmerProduce.farmer">Farmer</span></dt>
+          <dd>
+            <span>{{ farmerProduceRef.farmer?.login }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/farmer-produce', farmerProduceRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

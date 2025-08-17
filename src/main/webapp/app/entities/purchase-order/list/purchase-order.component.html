@@ -1,0 +1,188 @@
+<div>
+  <h2 id="page-heading" data-cy="PurchaseOrderHeading">
+    <span jhiTranslate="agriLinkRwandaApp.purchaseOrder.home.title">Purchase Orders</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="agriLinkRwandaApp.purchaseOrder.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-purchase-order"
+        [routerLink]="['/purchase-order/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span class="hidden-sm-down" jhiTranslate="agriLinkRwandaApp.purchaseOrder.home.createLabel">Create a new Purchase Order</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error />
+
+  <jhi-alert />
+
+  <form name="searchForm" class="row row-cols-sm-auto align-items-center">
+    <div class="col-sm-12">
+      <div class="input-group w-100 mt-3">
+        <label class="visually-hidden" for="currentSearch" jhiTranslate="agriLinkRwandaApp.purchaseOrder.home.search"
+          >Search for Purchase Order</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="currentSearch"
+          id="currentSearch"
+          name="currentSearch"
+          placeholder="{{ 'agriLinkRwandaApp.purchaseOrder.home.search' | translate }}"
+        />
+
+        <button class="btn btn-info" (click)="search(currentSearch)">
+          <fa-icon icon="search"></fa-icon>
+        </button>
+
+        @if (currentSearch) {
+          <button class="btn btn-danger" (click)="search('')">
+            <fa-icon icon="trash-alt"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </form>
+
+  @if (purchaseOrders().length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="agriLinkRwandaApp.purchaseOrder.home.notFound">No Purchase Orders found</span>
+    </div>
+  } @else {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(sortState)]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="orderDate">
+              <div class="d-flex">
+                <span jhiTranslate="agriLinkRwandaApp.purchaseOrder.orderDate">Order Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="status">
+              <div class="d-flex">
+                <span jhiTranslate="agriLinkRwandaApp.purchaseOrder.status">Status</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="totalAmount">
+              <div class="d-flex">
+                <span jhiTranslate="agriLinkRwandaApp.purchaseOrder.totalAmount">Total Amount</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="deliveryAddress">
+              <div class="d-flex">
+                <span jhiTranslate="agriLinkRwandaApp.purchaseOrder.deliveryAddress">Delivery Address</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="notes">
+              <div class="d-flex">
+                <span jhiTranslate="agriLinkRwandaApp.purchaseOrder.notes">Notes</span>
+                @if (!currentSearch) {
+                  <fa-icon class="p-1" icon="sort"></fa-icon>
+                }
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="buyer.login">
+              <div class="d-flex">
+                <span jhiTranslate="agriLinkRwandaApp.purchaseOrder.buyer">Buyer</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (purchaseOrder of purchaseOrders(); track trackId(purchaseOrder)) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/purchase-order', purchaseOrder.id, 'view']">{{ purchaseOrder.id }}</a>
+              </td>
+              <td>{{ purchaseOrder.orderDate | formatMediumDatetime }}</td>
+              <td [jhiTranslate]="'agriLinkRwandaApp.OrderStatus.' + (purchaseOrder.status ?? 'null')">
+                {{
+                  {
+                    null: '',
+                    PENDING: 'PENDING',
+                    CONFIRMED: 'CONFIRMED',
+                    REJECTED: 'REJECTED',
+                    PICKED_UP: 'PICKED_UP',
+                    IN_TRANSIT: 'IN_TRANSIT',
+                    DELIVERED: 'DELIVERED',
+                    CANCELLED: 'CANCELLED',
+                  }[purchaseOrder.status ?? 'null']
+                }}
+              </td>
+              <td>{{ purchaseOrder.totalAmount }}</td>
+              <td>{{ purchaseOrder.deliveryAddress }}</td>
+              <td>{{ purchaseOrder.notes }}</td>
+              <td>
+                {{ purchaseOrder.buyer?.login }}
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/purchase-order', purchaseOrder.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/purchase-order', purchaseOrder.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(purchaseOrder)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+  @if (purchaseOrders().length > 0) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page, totalItems, itemsPerPage }" />
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [page]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+</div>

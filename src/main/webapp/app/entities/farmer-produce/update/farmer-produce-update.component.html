@@ -1,0 +1,180 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-farmer-produce-heading"
+        data-cy="FarmerProduceCreateUpdateHeading"
+        jhiTranslate="agriLinkRwandaApp.farmerProduce.home.createOrEditLabel"
+      >
+        Create or edit a Farmer Produce
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="agriLinkRwandaApp.farmerProduce.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let quantityRef = editForm.get('quantity')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_quantity" jhiTranslate="agriLinkRwandaApp.farmerProduce.quantity">Quantity</label>
+          <input type="number" class="form-control" name="quantity" id="field_quantity" data-cy="quantity" formControlName="quantity" />
+          @if (quantityRef.invalid && (quantityRef.dirty || quantityRef.touched)) {
+            <div>
+              @if (editForm.get('quantity')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('quantity')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let unitRef = editForm.get('unit')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_unit" jhiTranslate="agriLinkRwandaApp.farmerProduce.unit">Unit</label>
+          <select class="form-control" name="unit" formControlName="unit" id="field_unit" data-cy="unit">
+            <option [ngValue]="null">{{ 'agriLinkRwandaApp.Unit.null' | translate }}</option>
+            @for (unit of unitValues; track $index) {
+              <option [value]="unit">{{ 'agriLinkRwandaApp.Unit.' + unit | translate }}</option>
+            }
+          </select>
+          @if (unitRef.invalid && (unitRef.dirty || unitRef.touched)) {
+            <div>
+              @if (editForm.get('unit')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let pricePerUnitRef = editForm.get('pricePerUnit')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_pricePerUnit" jhiTranslate="agriLinkRwandaApp.farmerProduce.pricePerUnit"
+            >Price Per Unit</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="pricePerUnit"
+            id="field_pricePerUnit"
+            data-cy="pricePerUnit"
+            formControlName="pricePerUnit"
+          />
+          @if (pricePerUnitRef.invalid && (pricePerUnitRef.dirty || pricePerUnitRef.touched)) {
+            <div>
+              @if (editForm.get('pricePerUnit')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('pricePerUnit')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let availableFromRef = editForm.get('availableFrom')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_availableFrom" jhiTranslate="agriLinkRwandaApp.farmerProduce.availableFrom"
+            >Available From</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_availableFrom"
+              data-cy="availableFrom"
+              type="datetime-local"
+              class="form-control"
+              name="availableFrom"
+              formControlName="availableFrom"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (availableFromRef.invalid && (availableFromRef.dirty || availableFromRef.touched)) {
+            <div>
+              @if (editForm.get('availableFrom')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('availableFrom')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >This field should be a date and time.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_availableUntil" jhiTranslate="agriLinkRwandaApp.farmerProduce.availableUntil"
+            >Available Until</label
+          >
+          <div class="d-flex">
+            <input
+              id="field_availableUntil"
+              data-cy="availableUntil"
+              type="datetime-local"
+              class="form-control"
+              name="availableUntil"
+              formControlName="availableUntil"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_grade" jhiTranslate="agriLinkRwandaApp.farmerProduce.grade">Grade</label>
+          <select class="form-control" name="grade" formControlName="grade" id="field_grade" data-cy="grade">
+            <option [ngValue]="null">{{ 'agriLinkRwandaApp.QualityGrade.null' | translate }}</option>
+            @for (qualityGrade of qualityGradeValues; track $index) {
+              <option [value]="qualityGrade">{{ 'agriLinkRwandaApp.QualityGrade.' + qualityGrade | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_farmer" jhiTranslate="agriLinkRwandaApp.farmerProduce.farmer">Farmer</label>
+          <select
+            class="form-control"
+            id="field_farmer"
+            data-cy="farmer"
+            name="farmer"
+            formControlName="farmer"
+            [compareWith]="compareUser"
+          >
+            <option [ngValue]="null"></option>
+            @for (userOption of usersSharedCollection; track $index) {
+              <option [ngValue]="userOption">{{ userOption.login }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

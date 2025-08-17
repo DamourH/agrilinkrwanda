@@ -1,0 +1,67 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (purchaseOrder(); as purchaseOrderRef) {
+      <div>
+        <h2 data-cy="purchaseOrderDetailsHeading">
+          <span jhiTranslate="agriLinkRwandaApp.purchaseOrder.detail.title">Purchase Order</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ purchaseOrderRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.purchaseOrder.orderDate">Order Date</span></dt>
+          <dd>
+            <span>{{ purchaseOrderRef.orderDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.purchaseOrder.status">Status</span></dt>
+          <dd>
+            <span [jhiTranslate]="'agriLinkRwandaApp.OrderStatus.' + (purchaseOrderRef.status ?? 'null')">{{
+              {
+                null: '',
+                PENDING: 'PENDING',
+                CONFIRMED: 'CONFIRMED',
+                REJECTED: 'REJECTED',
+                PICKED_UP: 'PICKED_UP',
+                IN_TRANSIT: 'IN_TRANSIT',
+                DELIVERED: 'DELIVERED',
+                CANCELLED: 'CANCELLED',
+              }[purchaseOrderRef.status ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.purchaseOrder.totalAmount">Total Amount</span></dt>
+          <dd>
+            <span>{{ purchaseOrderRef.totalAmount }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.purchaseOrder.deliveryAddress">Delivery Address</span></dt>
+          <dd>
+            <span>{{ purchaseOrderRef.deliveryAddress }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.purchaseOrder.notes">Notes</span></dt>
+          <dd>
+            <span>{{ purchaseOrderRef.notes }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.purchaseOrder.buyer">Buyer</span></dt>
+          <dd>
+            <span>{{ purchaseOrderRef.buyer?.login }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/purchase-order', purchaseOrderRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

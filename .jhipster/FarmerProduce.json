@@ -1,0 +1,52 @@
+{
+  "annotations": {
+    "changelogDate": "20250817181208"
+  },
+  "applications": ["*"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "quantity",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "unit",
+      "fieldType": "Unit",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "KG,GRAM,LITER,PIECE"
+    },
+    {
+      "fieldName": "pricePerUnit",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "availableFrom",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "availableUntil",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "grade",
+      "fieldType": "QualityGrade",
+      "fieldValues": "A_GRADE,B_GRADE,C_GRADE"
+    }
+  ],
+  "name": "FarmerProduce",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "farmer",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipWithBuiltInEntity": true
+    }
+  ],
+  "service": "serviceImpl"
+}

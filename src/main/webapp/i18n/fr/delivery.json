@@ -1,0 +1,29 @@
+{
+  "agriLinkRwandaApp": {
+    "delivery": {
+      "home": {
+        "title": "Deliveries",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Delivery",
+        "createOrEditLabel": "Créer ou éditer un Delivery",
+        "search": "Recherche pour Delivery",
+        "notFound": "Aucun Delivery trouvé"
+      },
+      "created": "Un nouveau Delivery a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Delivery avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Delivery avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Delivery {{ id }} ?"
+      },
+      "detail": {
+        "title": "Delivery"
+      },
+      "id": "ID",
+      "pickupDate": "Pickup Date",
+      "deliveryDate": "Delivery Date",
+      "status": "Status",
+      "driver": "Driver",
+      "order": "Order"
+    }
+  }
+}

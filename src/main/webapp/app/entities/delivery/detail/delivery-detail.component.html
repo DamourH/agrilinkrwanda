@@ -1,0 +1,65 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (delivery(); as deliveryRef) {
+      <div>
+        <h2 data-cy="deliveryDetailsHeading"><span jhiTranslate="agriLinkRwandaApp.delivery.detail.title">Delivery</span></h2>
+
+        <hr />
+
+        <jhi-alert-error />
+
+        <jhi-alert />
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ deliveryRef.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.delivery.pickupDate">Pickup Date</span></dt>
+          <dd>
+            <span>{{ deliveryRef.pickupDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.delivery.deliveryDate">Delivery Date</span></dt>
+          <dd>
+            <span>{{ deliveryRef.deliveryDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.delivery.status">Status</span></dt>
+          <dd>
+            <span [jhiTranslate]="'agriLinkRwandaApp.OrderStatus.' + (deliveryRef.status ?? 'null')">{{
+              {
+                null: '',
+                PENDING: 'PENDING',
+                CONFIRMED: 'CONFIRMED',
+                REJECTED: 'REJECTED',
+                PICKED_UP: 'PICKED_UP',
+                IN_TRANSIT: 'IN_TRANSIT',
+                DELIVERED: 'DELIVERED',
+                CANCELLED: 'CANCELLED',
+              }[deliveryRef.status ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.delivery.driver">Driver</span></dt>
+          <dd>
+            <span>{{ deliveryRef.driver?.login }}</span>
+          </dd>
+          <dt><span jhiTranslate="agriLinkRwandaApp.delivery.order">Order</span></dt>
+          <dd>
+            @if (delivery()!.order) {
+              <div>
+                <a [routerLink]="['/purchase-order', delivery()!.order?.id, 'view']">{{ deliveryRef.order?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/delivery', deliveryRef.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

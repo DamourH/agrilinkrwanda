@@ -1,0 +1,3 @@
+org.springframework.test.context.ContextCustomizerFactory = \
+    com.agrilink.rwanda.config.SqlTestContainersSpringContextCustomizerFactory,com.agrilink.rwanda.config.\
+    TestContainersSpringContextCustomizerFactory

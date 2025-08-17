@@ -1,0 +1,150 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-purchase-order-heading"
+        data-cy="PurchaseOrderCreateUpdateHeading"
+        jhiTranslate="agriLinkRwandaApp.purchaseOrder.home.createOrEditLabel"
+      >
+        Create or edit a Purchase Order
+      </h2>
+
+      <div>
+        <jhi-alert-error />
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="agriLinkRwandaApp.purchaseOrder.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        @let orderDateRef = editForm.get('orderDate')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_orderDate" jhiTranslate="agriLinkRwandaApp.purchaseOrder.orderDate">Order Date</label>
+          <div class="d-flex">
+            <input
+              id="field_orderDate"
+              data-cy="orderDate"
+              type="datetime-local"
+              class="form-control"
+              name="orderDate"
+              formControlName="orderDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          @if (orderDateRef.invalid && (orderDateRef.dirty || orderDateRef.touched)) {
+            <div>
+              @if (editForm.get('orderDate')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('orderDate')?.errors?.datetimelocal"
+                jhiTranslate="entity.validation.datetimelocal"
+                >This field should be a date and time.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let statusRef = editForm.get('status')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_status" jhiTranslate="agriLinkRwandaApp.purchaseOrder.status">Status</label>
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null">{{ 'agriLinkRwandaApp.OrderStatus.null' | translate }}</option>
+            @for (orderStatus of orderStatusValues; track $index) {
+              <option [value]="orderStatus">{{ 'agriLinkRwandaApp.OrderStatus.' + orderStatus | translate }}</option>
+            }
+          </select>
+          @if (statusRef.invalid && (statusRef.dirty || statusRef.touched)) {
+            <div>
+              @if (editForm.get('status')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        @let totalAmountRef = editForm.get('totalAmount')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_totalAmount" jhiTranslate="agriLinkRwandaApp.purchaseOrder.totalAmount">Total Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            name="totalAmount"
+            id="field_totalAmount"
+            data-cy="totalAmount"
+            formControlName="totalAmount"
+          />
+          @if (totalAmountRef.invalid && (totalAmountRef.dirty || totalAmountRef.touched)) {
+            <div>
+              @if (editForm.get('totalAmount')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('totalAmount')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        @let deliveryAddressRef = editForm.get('deliveryAddress')!;
+        <div class="mb-3">
+          <label class="form-label" for="field_deliveryAddress" jhiTranslate="agriLinkRwandaApp.purchaseOrder.deliveryAddress"
+            >Delivery Address</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="deliveryAddress"
+            id="field_deliveryAddress"
+            data-cy="deliveryAddress"
+            formControlName="deliveryAddress"
+          />
+          @if (deliveryAddressRef.invalid && (deliveryAddressRef.dirty || deliveryAddressRef.touched)) {
+            <div>
+              @if (editForm.get('deliveryAddress')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_notes" jhiTranslate="agriLinkRwandaApp.purchaseOrder.notes">Notes</label>
+          <input type="text" class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_buyer" jhiTranslate="agriLinkRwandaApp.purchaseOrder.buyer">Buyer</label>
+          <select class="form-control" id="field_buyer" data-cy="buyer" name="buyer" formControlName="buyer" [compareWith]="compareUser">
+            <option [ngValue]="null"></option>
+            @for (userOption of usersSharedCollection; track $index) {
+              <option [ngValue]="userOption">{{ userOption.login }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
